@@ -1,43 +1,65 @@
-import { useState, useEffect, useRef } from "react";
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>XSIDE × AI Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#07060F;font-family:'Nunito',sans-serif;color:#fff;overflow-x:hidden}
+  ::-webkit-scrollbar{width:4px}
+  ::-webkit-scrollbar-track{background:transparent}
+  ::-webkit-scrollbar-thumb{background:rgba(255,45,107,.35);border-radius:4px}
+  input[type=date]::-webkit-calendar-picker-indicator{filter:invert(1) opacity(.5)}
+  button:active{transform:scale(.96)}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-10px) rotate(2deg)}}
+  @keyframes dot{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1.1);opacity:1}}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  .fade-in{animation:fadeIn .35s ease forwards}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
 
-/* ─── DESIGN TOKENS ─────────────────────────────────────────────────── */
+/* ── TOKENS ─────────────────────────────────────────────────────────── */
 const C = {
-  pink:    "#FF2D6B",
-  lime:    "#C8FF00",
-  purple:  "#7C3AED",
-  dark:    "#07060F",
-  dark2:   "#110E1E",
-  dark3:   "#1C1730",
-  white:   "#FFFFFF",
-  muted:   "rgba(255,255,255,0.55)",
-  glass:   "rgba(255,255,255,0.06)",
-  glassBorder: "rgba(255,255,255,0.10)",
+  pink:"#FF2D6B", lime:"#C8FF00", purple:"#7C3AED",
+  dark:"#07060F", dark2:"#110E1E", dark3:"#1C1730",
+  white:"#FFFFFF", muted:"rgba(255,255,255,0.55)",
+  glass:"rgba(255,255,255,0.06)", glassBorder:"rgba(255,255,255,0.10)",
 };
 
-/* ─── MONKEY SVG ─────────────────────────────────────────────────────── */
-function Monkey({ size = 48, animate = false }) {
+/* ── MONKEY ──────────────────────────────────────────────────────────── */
+function Monkey({ size=48, animate=false }) {
   return (
     <svg width={size} height={size} viewBox="0 0 100 100"
-      style={{ animation: animate ? "float 2.4s ease-in-out infinite" : "none",
-               filter: "drop-shadow(0 4px 18px rgba(255,45,107,.45))" }}>
+      style={{animation:animate?"float 2.4s ease-in-out infinite":"none",
+              filter:"drop-shadow(0 4px 18px rgba(255,45,107,.45))"}}>
       <ellipse cx="17" cy="52" rx="12" ry="13" fill="#c87941"/>
-      <ellipse cx="17" cy="52" rx="7"  ry="8"  fill="#f0a96d"/>
+      <ellipse cx="17" cy="52" rx="7" ry="8" fill="#f0a96d"/>
       <ellipse cx="83" cy="52" rx="12" ry="13" fill="#c87941"/>
-      <ellipse cx="83" cy="52" rx="7"  ry="8"  fill="#f0a96d"/>
+      <ellipse cx="83" cy="52" rx="7" ry="8" fill="#f0a96d"/>
       <ellipse cx="50" cy="50" rx="31" ry="30" fill="#d4894e"/>
       <ellipse cx="50" cy="59" rx="19" ry="15" fill="#f0c89a"/>
-      <ellipse cx="37" cy="44" rx="6"  ry="7"  fill="white"/>
+      <ellipse cx="37" cy="44" rx="6" ry="7" fill="white"/>
       <ellipse cx="37" cy="45" rx="3.5" ry="4" fill="#07060F"/>
       <ellipse cx="38.5" cy="43.5" rx="1.5" ry="1.5" fill="white"/>
-      <ellipse cx="63" cy="44" rx="6"  ry="7"  fill="white"/>
+      <ellipse cx="63" cy="44" rx="6" ry="7" fill="white"/>
       <ellipse cx="63" cy="45" rx="3.5" ry="4" fill="#07060F"/>
       <ellipse cx="64.5" cy="43.5" rx="1.5" ry="1.5" fill="white"/>
       <ellipse cx="50" cy="54" rx="5" ry="3.5" fill="#b06a2e"/>
       <ellipse cx="48" cy="53" rx="1.4" ry="1" fill="#7a3f10"/>
       <ellipse cx="52" cy="53" rx="1.4" ry="1" fill="#7a3f10"/>
       <path d="M42 62 Q50 70 58 62" stroke="#7a3f10" strokeWidth="2.2" fill="none" strokeLinecap="round"/>
-      <rect x="21" y="14" width="58" height="20" rx="5" fill={C.pink}/>
-      <ellipse cx="50" cy="14" rx="28" ry="8" fill={C.pink}/>
+      <rect x="21" y="14" width="58" height="20" rx="5" fill="#FF2D6B"/>
+      <ellipse cx="50" cy="14" rx="28" ry="8" fill="#FF2D6B"/>
       <text x="50" y="27" textAnchor="middle" fontSize="9" fontWeight="900" fill="white" fontFamily="sans-serif">XSIDE</text>
       <ellipse cx="50" cy="34" rx="28" ry="4.5" fill="#cc1a52"/>
       <path d="M79 72 Q96 66 93 82 Q90 91 80 86" stroke="#c87941" strokeWidth="4.5" fill="none" strokeLinecap="round"/>
@@ -45,103 +67,150 @@ function Monkey({ size = 48, animate = false }) {
   );
 }
 
-/* ─── SPOTIFY MOCK DATA ──────────────────────────────────────────────── */
-const SPOTIFY_PROFILES = [
-  { id: "kpop",      label: "K-Pop / Idol",      emoji: "🌸", artists: ["aespa","NewJeans","IVE"],   color: "#FF6BB3", vibe: "Colorful matching sets, pastel tones, playful accessories" },
-  { id: "hiphop",    label: "Hip-Hop / Trap",     emoji: "🔥", artists: ["Ice Spice","Cardi B","Doja Cat"], color: "#FF9500", vibe: "Oversized streetwear, cargo pants, bold graphics" },
-  { id: "indie",     label: "Indie / Sad Girl",   emoji: "🌿", artists: ["Olivia Rodrigo","Lana Del Rey","Phoebe Bridgers"], color: "#8B9FFF", vibe: "Soft minimal, muted earth tones, layered looks" },
-  { id: "pop",       label: "Pop / Dance",        emoji: "✨", artists: ["Sabrina Carpenter","Charli xcx","Dua Lipa"], color: "#FFD600", vibe: "Bright statement pieces, mini dresses, fun prints" },
-  { id: "rnb",       label: "R&B / Soul",         emoji: "💜", artists: ["SZA","Chlöe","Jhené Aiko"], color: "#C084FC", vibe: "Bodycon silhouettes, neutral tones, sleek styling" },
-  { id: "rock",      label: "Alt / Rock",         emoji: "🖤", artists: ["Paramore","Billie Eilish","Gracie Abrams"], color: "#888", vibe: "Dark edgy layers, band tees, relaxed silhouettes" },
-];
-
-const XSIDE_PRODUCTS = {
-  kpop:   ["Pastel Matching Set","Crop Gömlek + Mini Etek","Çiçekli Boxy Tişört","Interlok Takım"],
-  hiphop: ["Oversized Grafik Tişört","Kargo Jean + Crop Atlet","Barrel Jean","Boxy Hoodie"],
-  indie:  ["Keten Gömlek + Düz Jean","Nakışlı Basic Tişört","Geniş Paça Jean","Yumuşak İnterlok Set"],
-  pop:    ["Mini Bodycon Elbise","Parlak Crop Tişört + Şort","Çizgili Casual Set","Mesh Elbise"],
-  rnb:    ["Bodycon Midi Elbise","Basic Tişört + Barrel Jean","Matching İnterlok Set","Kırışık Örme Elbise"],
-  rock:   ["Siyah Boxy Tişört + Şalvar Jean","Grafik Crop + Geniş Paça","Eşofman Takım","Layered Casual Set"],
-};
-
-/* ─── STORE INVENTORY ────────────────────────────────────────────────── */
-const STORE_STOCK = [
-  { name:"Pastel Matching Set", sizes:["XS","S","M"], colors:["Lila","Beyaz","Pembe"], stock:12, hot:true },
-  { name:"Barrel Jean", sizes:["S","M","L","XL"], colors:["Açık Mavi","Koyu Mavi"], stock:8, hot:true },
-  { name:"Boxy Grafik Tişört", sizes:["S","M","L"], colors:["Siyah","Beyaz","Gri"], stock:21, hot:false },
-  { name:"Mini Bodycon Elbise", sizes:["XS","S","M"], colors:["Siyah","Ekru"], stock:5, hot:true },
-  { name:"Keten Gömlek", sizes:["S","M","L"], colors:["Beyaz","Kum"], stock:15, hot:false },
-  { name:"Crop Kargo Jean", sizes:["XS","S","M","L"], colors:["Koyu Mavi","Siyah"], stock:3, hot:true },
-];
-
-/* ─── COMMUNITY EVENTS ───────────────────────────────────────────────── */
-const EVENTS = [
-  { date:"15 May", title:"İTÜ Bahar Festivali", loc:"İstanbul", type:"festival", emoji:"🎪" },
-  { date:"22 May", title:"Marmara Üniv. Kampüs Pop-Up", loc:"Kadıköy", type:"popup", emoji:"🛍️" },
-  { date:"1 Haz",  title:"YTÜ Style Workshop", loc:"Beşiktaş", type:"workshop", emoji:"✂️" },
-  { date:"7 Haz",  title:"XSIDE Life Summer Drop", loc:"Online + Mağaza", type:"drop", emoji:"✨" },
-];
-
-/* ─── HELPERS ────────────────────────────────────────────────────────── */
-function genCoupon(p) { return p + Math.random().toString(36).slice(2,7).toUpperCase(); }
-
-function GlassCard({ children, style = {}, onClick }) {
+/* ── HELPERS ─────────────────────────────────────────────────────────── */
+function GlassCard({ children, style={}, onClick }) {
+  return <div onClick={onClick} style={{background:C.glass,border:`1px solid ${C.glassBorder}`,borderRadius:20,padding:18,backdropFilter:"blur(16px)",cursor:onClick?"pointer":"default",transition:"transform .15s",...style}}>{children}</div>;
+}
+function Pill({ children, color=C.pink }) {
+  return <span style={{background:color+"22",border:`1px solid ${color}55`,color,borderRadius:20,padding:"3px 10px",fontSize:11,fontWeight:700}}>{children}</span>;
+}
+function genCoupon(p){ return p+Math.random().toString(36).slice(2,7).toUpperCase(); }
+function Btn({ children, onClick, style={}, secondary=false }) {
   return (
-    <div onClick={onClick} style={{
-      background: C.glass, border: `1px solid ${C.glassBorder}`,
-      borderRadius: 20, padding: 18, backdropFilter: "blur(16px)",
-      cursor: onClick ? "pointer" : "default",
-      transition: "transform .15s, box-shadow .15s",
+    <button onClick={onClick} style={{
+      padding:"13px 20px", border:"none", borderRadius:14, fontWeight:800, fontSize:14,
+      cursor:"pointer", width:"100%", transition:"opacity .2s",
+      background: secondary ? C.glass : `linear-gradient(90deg,${C.pink},#ff6b9d)`,
+      border: secondary ? `1px solid ${C.glassBorder}` : "none",
+      color:C.white,
+      boxShadow: secondary ? "none" : `0 6px 24px ${C.pink}44`,
       ...style
-    }}>{children}</div>
+    }}>{children}</button>
   );
 }
 
-function PillBadge({ children, color = C.pink }) {
-  return <span style={{ background: color+"22", border:`1px solid ${color}55`, color,
-    borderRadius:20, padding:"3px 10px", fontSize:11, fontWeight:700 }}>{children}</span>;
-}
-
-/* ─── TABS ───────────────────────────────────────────────────────────── */
-const TABS = [
-  { id:"home",     label:"Hub",     icon:"⚡" },
-  { id:"spotify",  label:"Müzik",   icon:"🎵" },
-  { id:"chat",     label:"Xo",      icon:"🙈" },
-  { id:"store",    label:"Mağaza",  icon:"🏪" },
-  { id:"community",label:"Topluluk",icon:"🎪" },
+/* ── SPOTIFY DATA ────────────────────────────────────────────────────── */
+const PROFILES = [
+  {id:"kpop",   label:"K-Pop / Idol",    emoji:"🌸", artists:["aespa","NewJeans","IVE"],          color:"#FF6BB3", vibe:"Colorful matching sets, pastel tones"},
+  {id:"hiphop", label:"Hip-Hop / Trap",  emoji:"🔥", artists:["Ice Spice","Doja Cat","Cardi B"],  color:"#FF9500", vibe:"Oversized streetwear, cargo, bold graphics"},
+  {id:"indie",  label:"Indie / Sad Girl",emoji:"🌿", artists:["Olivia Rodrigo","Lana Del Rey"],   color:"#8B9FFF", vibe:"Soft minimal, muted earth tones"},
+  {id:"pop",    label:"Pop / Dance",     emoji:"✨", artists:["Sabrina Carpenter","Charli xcx"],  color:"#FFD600", vibe:"Bright statement pieces, mini dresses"},
+  {id:"rnb",    label:"R&B / Soul",      emoji:"💜", artists:["SZA","Chlöe","Jhené Aiko"],        color:"#C084FC", vibe:"Bodycon silhouettes, sleek styling"},
+  {id:"rock",   label:"Alt / Rock",      emoji:"🖤", artists:["Billie Eilish","Paramore"],         color:"#888",    vibe:"Dark edgy layers, relaxed silhouettes"},
 ];
 
-/* ══════════════════════════════════════════════════════════════════════ */
-export default function XSidePlatform() {
+const STORE = [
+  {name:"Pastel Matching Set",    sizes:["XS","S","M"],      colors:["Lila","Beyaz","Pembe"],     stock:12, hot:true},
+  {name:"Barrel Jean",            sizes:["S","M","L","XL"],  colors:["Açık Mavi","Koyu Mavi"],    stock:8,  hot:true},
+  {name:"Boxy Grafik Tişört",     sizes:["S","M","L"],       colors:["Siyah","Beyaz","Gri"],      stock:21, hot:false},
+  {name:"Mini Bodycon Elbise",    sizes:["XS","S","M"],      colors:["Siyah","Ekru"],             stock:5,  hot:true},
+  {name:"Keten Gömlek",           sizes:["S","M","L"],       colors:["Beyaz","Kum"],              stock:15, hot:false},
+  {name:"Crop Kargo Jean",        sizes:["XS","S","M","L"],  colors:["Koyu Mavi","Siyah"],        stock:3,  hot:true},
+];
+
+const EVENTS = [
+  {date:"15 May", title:"İTÜ Bahar Festivali",          loc:"İstanbul",      emoji:"🎪"},
+  {date:"22 May", title:"Marmara Üniv. Kampüs Pop-Up",  loc:"Kadıköy",       emoji:"🛍️"},
+  {date:"1 Haz",  title:"YTÜ Style Workshop",           loc:"Beşiktaş",      emoji:"✂️"},
+  {date:"7 Haz",  title:"XSIDE Life Summer Drop",       loc:"Online + Mağaza",emoji:"✨"},
+];
+
+/* ── MOCK AI RESPONSES ───────────────────────────────────────────────── */
+const MOCK_OUTFITS = {
+  kpop:   {vibe:"Pastel & playful: matching setler, idol aesthetic 🌸",outfits:[{name:"Campus Idol",items:["Pastel Matching Set (Lila)","Boxy Crop Tişört","Mini Etek Kombinli"],occasion:"Okul / Kafe",hashtags:["#KPopFashion","#IdolVibes"]},{name:"Soft Girlie",items:["Çiçekli Mini Elbise","Crop Gömlek (Beyaz)","İnterlok Set"],occasion:"Arkadaş buluşması",hashtags:["#SoftGirlie","#PastelFit"]}],trendNote:"NewJeans aesthetic TikTok'ta #1 trend 🌸"},
+  hiphop: {vibe:"Street energy: oversized grafik, cargo pants 🔥",outfits:[{name:"Street Queen",items:["Oversized Grafik Tişört (Siyah)","Barrel Jean","Crop Kargo Ceket"],occasion:"Şehir / AVM",hashtags:["#StreetStyle","#HipHopFit"]},{name:"Trap Casual",items:["Boxy Hoodie (Gri)","Kargo Jean","Crop Atlet"],occasion:"Hafta sonu",hashtags:["#Streetwear","#UrbanFit"]}],trendNote:"Mob wife aesthetic evrim geçiriyor, cargo + oversized combo 🔥"},
+  indie:  {vibe:"Muted & layered: earth tones, relaxed vibes 🌿",outfits:[{name:"Indie Dreamer",items:["Keten Gömlek (Kum)","Düz Jean","Nakışlı Basic Tişört"],occasion:"Kafe / Kitap",hashtags:["#IndieAesthetic","#SoftCore"]},{name:"Sad Girl Chic",items:["Oversized Gömlek","Geniş Paça Jean (Açık)","Soft Sweatshirt"],occasion:"Şehir yürüyüşü",hashtags:["#SadGirlAesthetic","#CozyFit"]}],trendNote:"BookTok aesthetic + muted tones = en yüksek save oranı 📚"},
+  pop:    {vibe:"Bright & fun: statement pieces, dance-ready ✨",outfits:[{name:"Pop Princess",items:["Mini Bodycon Elbise (Pembe)","Crop Top + Mini Etek","Matching Canlı Set"],occasion:"Parti / İçerik çekimi",hashtags:["#PopGirl","#BrightFit"]},{name:"Sabrina Core",items:["Çizgili Casual Set","Boxy Crop Tişört (Sarı)","Denim Mini"],occasion:"Yaz aktiviteleri",hashtags:["#SabrinaCore","#Y2KVibes"]}],trendNote:"Brat summer aesthetic hâlâ gündemde — neon & bold ✨"},
+  rnb:    {vibe:"Sleek & bodied: clean lines, neutral power 💜",outfits:[{name:"R&B Royalty",items:["Bodycon Midi Elbise (Siyah)","İnterlok Matching Set","Kırışık Örme Elbise"],occasion:"Akşam / Date",hashtags:["#RnBStyle","#BodyconFit"]},{name:"SZA Vibes",items:["Basic Tişört (Ekru)","Barrel Jean","Crop Gömlek Üstü"],occasion:"Günlük / Kafe",hashtags:["#SZACore","#CleanGirl"]}],trendNote:"Clean girl aesthetic + neutral tones = en çok save edilen içerikler 💅"},
+  rock:   {vibe:"Dark & layered: edgy basics, effortless cool 🖤",outfits:[{name:"Alt It Girl",items:["Siyah Boxy Tişört","Şalvar Jean (Koyu)","Layered Crop Ceket"],occasion:"Konser / Şehir",hashtags:["#AltFashion","#EdgeyCore"]},{name:"Billie Core",items:["Grafik Crop Tişört","Geniş Paça Jean","Eşofman Takım (Siyah)"],occasion:"Hafta sonu casual",hashtags:["#BillieCore","#DarkAcademia"]}],trendNote:"Dark academia + streetwear crossover TikTok'ta yükseliyor 🖤"},
+};
+
+const MOCK_CHAT = [
+  "Süper seçim! 🔥 Bu vibe için sana **Barrel Jean + Boxy Grafik Tişört** kombo öneriyorum. Şu an TikTok'ta Mob Wife aesthetic'in casual versiyonu çok trend — tam senin havanı yakalar. #XSIDEStyle ile paylaş, kupon kazan! 🎁",
+  "Ohhh bu çok güzel! 🌸 **Pastel Matching Set + Mini Bodycon** ikili tam bu sezona ait. NewJeans aesthetic seviyor musun? O vibe tam XSIDE'da mevcut! #XSIDEStyle ile paylaş, kupon kazan! 🎁",
+  "Street queen energy! 🙈 **Oversized Grafik Tişört + Kargo Jean** ile tam bir statement yaparsın. IG'de bu kombini post edenlerin etkileşim oranı çok yüksek. #XSIDEStyle ile paylaş, kupon kazan! 🎁",
+  "Keyif aldım senden! ✨ **Keten Gömlek (Kum Rengi) + Geniş Paça Jean** = mükemmel Indie Café Girl energy. BookTok'ta bu look çok sevildi bu ay! #XSIDEStyle ile paylaş, kupon kazan! 🎁",
+];
+
+/* ── API CALL ─────────────────────────────────────────────────────────── */
+async function callClaude(apiKey, system, userMsg, history=[]) {
+  if (!apiKey) return null;
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{"Content-Type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system,messages:[...history,{role:"user",content:userMsg}]})
+    });
+    const data = await res.json();
+    return data.content?.map(c=>c.text||"").join("")||null;
+  } catch { return null; }
+}
+
+/* ══ TABS ════════════════════════════════════════════════════════════════ */
+const TABS = [
+  {id:"home",label:"Hub",icon:"⚡"},
+  {id:"spotify",label:"Müzik",icon:"🎵"},
+  {id:"chat",label:"Xo",icon:"🙈"},
+  {id:"store",label:"Mağaza",icon:"🏪"},
+  {id:"community",label:"Topluluk",icon:"🎪"},
+];
+
+/* ══ APP ════════════════════════════════════════════════════════════════ */
+function App() {
   const [tab, setTab] = useState("home");
+  const [apiKey, setApiKey] = useState(localStorage.getItem("xside_api_key")||"");
+  const [showApiInput, setShowApiInput] = useState(false);
+
+  const saveKey = (k) => { setApiKey(k); localStorage.setItem("xside_api_key",k); setShowApiInput(false); };
 
   return (
-    <div style={{ minHeight:"100vh", background:C.dark, color:C.white,
-      fontFamily:"'Nunito',sans-serif", display:"flex", flexDirection:"column", maxWidth:480, margin:"0 auto", position:"relative" }}>
-      <style>{GLOBAL_CSS}</style>
+    <div style={{minHeight:"100vh",background:C.dark,color:C.white,fontFamily:"'Nunito',sans-serif",
+      display:"flex",flexDirection:"column",maxWidth:480,margin:"0 auto",position:"relative"}}>
+
+      {/* API Key Banner */}
+      {!apiKey && (
+        <div style={{background:`${C.purple}33`,borderBottom:`1px solid ${C.purple}55`,padding:"8px 16px",
+          display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
+          <span style={{fontSize:11,color:"rgba(255,255,255,.7)"}}>🤖 AI özellikler için API key ekle</span>
+          <button onClick={()=>setShowApiInput(true)} style={{padding:"4px 12px",background:C.purple,
+            border:"none",borderRadius:20,color:"white",fontSize:11,fontWeight:800,cursor:"pointer"}}>Ekle</button>
+        </div>
+      )}
+
+      {showApiInput && (
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.8)",display:"flex",alignItems:"center",
+          justifyContent:"center",zIndex:200,padding:20}}>
+          <GlassCard style={{width:"100%",maxWidth:380}}>
+            <div style={{fontWeight:900,fontSize:16,marginBottom:4}}>🔑 Anthropic API Key</div>
+            <div style={{fontSize:12,color:C.muted,marginBottom:14}}>
+              <a href="https://console.anthropic.com" target="_blank" style={{color:C.lime}}>console.anthropic.com</a>'dan ücretsiz alabilirsin. Demo için opsiyonel.
+            </div>
+            <ApiKeyInput onSave={saveKey} onSkip={()=>setShowApiInput(false)} currentKey={apiKey}/>
+          </GlassCard>
+        </div>
+      )}
 
       {/* Content */}
-      <div style={{ flex:1, overflowY:"auto", paddingBottom:72 }}>
-        {tab === "home"      && <HomeTab      setTab={setTab}/>}
-        {tab === "spotify"   && <SpotifyTab   />}
-        {tab === "chat"      && <ChatTab       />}
-        {tab === "store"     && <StoreTab     />}
-        {tab === "community" && <CommunityTab />}
+      <div style={{flex:1,overflowY:"auto",paddingBottom:72}}>
+        {tab==="home"      && <HomeTab      setTab={setTab} apiKey={apiKey} onApiClick={()=>setShowApiInput(true)}/>}
+        {tab==="spotify"   && <SpotifyTab   apiKey={apiKey}/>}
+        {tab==="chat"      && <ChatTab      apiKey={apiKey}/>}
+        {tab==="store"     && <StoreTab/>}
+        {tab==="community" && <CommunityTab/>}
       </div>
 
       {/* Bottom Nav */}
-      <div style={{ position:"fixed", bottom:0, left:"50%", transform:"translateX(-50%)",
-        width:"100%", maxWidth:480, background:"rgba(7,6,15,.92)", backdropFilter:"blur(24px)",
-        borderTop:`1px solid ${C.glassBorder}`, display:"flex", zIndex:99 }}>
-        {TABS.map(t => (
-          <button key={t.id} onClick={() => setTab(t.id)} style={{
-            flex:1, padding:"10px 0 8px", background:"none", border:"none", cursor:"pointer",
-            display:"flex", flexDirection:"column", alignItems:"center", gap:2,
-            color: tab===t.id ? C.pink : C.muted, transition:"color .2s"
-          }}>
-            <span style={{ fontSize:18 }}>{t.icon}</span>
-            <span style={{ fontSize:9, fontWeight:tab===t.id?800:500, letterSpacing:.5 }}>{t.label}</span>
-            {tab===t.id && <div style={{ width:4, height:4, borderRadius:"50%", background:C.pink }}/>}
+      <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",
+        width:"100%",maxWidth:480,background:"rgba(7,6,15,.95)",backdropFilter:"blur(24px)",
+        borderTop:`1px solid ${C.glassBorder}`,display:"flex",zIndex:99}}>
+        {TABS.map(t=>(
+          <button key={t.id} onClick={()=>setTab(t.id)} style={{
+            flex:1,padding:"10px 0 8px",background:"none",border:"none",cursor:"pointer",
+            display:"flex",flexDirection:"column",alignItems:"center",gap:2,
+            color:tab===t.id?C.pink:C.muted,transition:"color .2s"}}>
+            <span style={{fontSize:18}}>{t.icon}</span>
+            <span style={{fontSize:9,fontWeight:tab===t.id?800:500,letterSpacing:.5}}>{t.label}</span>
+            {tab===t.id && <div style={{width:4,height:4,borderRadius:"50%",background:C.pink}}/>}
           </button>
         ))}
       </div>
@@ -149,223 +218,234 @@ export default function XSidePlatform() {
   );
 }
 
-/* ══ HOME TAB ══════════════════════════════════════════════════════════ */
-function HomeTab({ setTab }) {
+/* ── API KEY INPUT ────────────────────────────────────────────────────── */
+function ApiKeyInput({ onSave, onSkip, currentKey }) {
+  const [val,setVal] = useState(currentKey||"");
   return (
-    <div style={{ padding:"24px 16px 8px" }}>
-      {/* Hero */}
-      <div style={{ textAlign:"center", marginBottom:24 }}>
-        <Monkey size={90} animate />
-        <div style={{ fontSize:11, letterSpacing:4, color:C.muted, marginTop:8 }}>XSIDE × AI PLATFORM</div>
-        <h1 style={{ margin:"6px 0 4px", fontSize:28, fontWeight:900,
+    <div>
+      <input value={val} onChange={e=>setVal(e.target.value)} placeholder="sk-ant-..."
+        style={{width:"100%",padding:"11px 14px",background:"rgba(255,255,255,.07)",
+          border:`1px solid ${C.glassBorder}`,borderRadius:12,color:"white",fontSize:13,
+          outline:"none",colorScheme:"dark",marginBottom:10}}/>
+      <div style={{display:"flex",gap:8}}>
+        <Btn onClick={()=>onSave(val)} style={{flex:1}}>Kaydet</Btn>
+        <Btn onClick={onSkip} secondary style={{flex:1}}>Demo Modu</Btn>
+      </div>
+    </div>
+  );
+}
+
+/* ══ HOME ════════════════════════════════════════════════════════════════ */
+function HomeTab({ setTab, apiKey, onApiClick }) {
+  return (
+    <div style={{padding:"24px 16px 8px"}} className="fade-in">
+      <div style={{textAlign:"center",marginBottom:24}}>
+        <Monkey size={90} animate/>
+        <div style={{fontSize:10,letterSpacing:4,color:C.muted,marginTop:8}}>XSIDE × AI PLATFORM</div>
+        <h1 style={{margin:"6px 0 4px",fontSize:28,fontWeight:900,
           background:`linear-gradient(90deg,${C.pink},${C.lime})`,
-          WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>
-          Tarzını Keşfet
-        </h1>
-        <p style={{ color:C.muted, fontSize:13, margin:0 }}>Müzik → Kombin → Paylaş → Kazan</p>
+          WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>Tarzını Keşfet</h1>
+        <p style={{color:C.muted,fontSize:13,margin:0}}>Müzik → Kombin → Paylaş → Kazan</p>
       </div>
 
       {/* Feature Grid */}
-      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10, marginBottom:16 }}>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:14}}>
         {[
-          { icon:"🎵", title:"Spotify Modası", desc:"Müziğine göre kombin", tab:"spotify", accent:C.lime },
-          { icon:"🙈", title:"Xo Stil Asistanı", desc:"AI trend danışmanı", tab:"chat", accent:C.pink },
-          { icon:"🏪", title:"Mağaza Ekranı", desc:"Stok + kombin rehberi", tab:"store", accent:"#00BCD4" },
-          { icon:"🎪", title:"XSIDE Life", desc:"Etkinlik & workshop", tab:"community", accent:C.purple },
-        ].map(f => (
-          <GlassCard key={f.tab} onClick={() => setTab(f.tab)} style={{ cursor:"pointer" }}>
-            <div style={{ fontSize:26, marginBottom:6 }}>{f.icon}</div>
-            <div style={{ fontWeight:800, fontSize:13, color:f.accent }}>{f.title}</div>
-            <div style={{ fontSize:11, color:C.muted, marginTop:2 }}>{f.desc}</div>
+          {icon:"🎵",title:"Spotify Modası",desc:"Müziğine göre kombin",tab:"spotify",accent:C.lime},
+          {icon:"🙈",title:"Xo Stil Asistanı",desc:"AI trend danışmanı",tab:"chat",accent:C.pink},
+          {icon:"🏪",title:"Mağaza Ekranı",desc:"Stok + kombin rehberi",tab:"store",accent:"#00BCD4"},
+          {icon:"🎪",title:"XSIDE Life",desc:"Etkinlik & workshop",tab:"community",accent:C.purple},
+        ].map(f=>(
+          <GlassCard key={f.tab} onClick={()=>setTab(f.tab)} style={{cursor:"pointer"}}>
+            <div style={{fontSize:26,marginBottom:6}}>{f.icon}</div>
+            <div style={{fontWeight:800,fontSize:13,color:f.accent}}>{f.title}</div>
+            <div style={{fontSize:11,color:C.muted,marginTop:2}}>{f.desc}</div>
           </GlassCard>
         ))}
       </div>
 
       {/* Omnichannel Flow */}
-      <GlassCard style={{ marginBottom:14 }}>
-        <div style={{ fontSize:12, fontWeight:800, letterSpacing:2, color:C.muted, marginBottom:12 }}>OMNICHANNEL AKIŞI</div>
-        <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:8 }}>
-          {[
-            { icon:"📱", label:"TikTok / IG" },
-            { icon:"→", label:"", arrow:true },
-            { icon:"🎵", label:"Spotify Vibe" },
-            { icon:"→", label:"", arrow:true },
-            { icon:"🤖", label:"AI Kombin" },
-            { icon:"→", label:"", arrow:true },
-            { icon:"🏪", label:"Mağaza / Web" },
-            { icon:"→", label:"", arrow:true },
-            { icon:"🎁", label:"Kupon & UGC" },
-          ].map((n,i) => n.arrow
-            ? <div key={i} style={{ color:C.pink, fontSize:14, fontWeight:900 }}>→</div>
-            : <div key={i} style={{ textAlign:"center" }}>
-                <div style={{ fontSize:18 }}>{n.icon}</div>
-                <div style={{ fontSize:9, color:C.muted, marginTop:2, whiteSpace:"nowrap" }}>{n.label}</div>
-              </div>
+      <GlassCard style={{marginBottom:12}}>
+        <div style={{fontSize:11,fontWeight:800,letterSpacing:2,color:C.muted,marginBottom:12}}>OMNICHANNEL AKIŞI</div>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:6}}>
+          {["📱 Sosyal","→","🎵 Spotify","→","🤖 AI Kombin","→","🏪 Mağaza","→","🎁 Kupon"].map((n,i)=>
+            n==="→"
+              ? <span key={i} style={{color:C.pink,fontSize:14,fontWeight:900}}>→</span>
+              : <div key={i} style={{textAlign:"center",fontSize:11,color:C.muted}}>{n}</div>
           )}
         </div>
       </GlassCard>
 
       {/* Stats */}
-      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:8, marginBottom:8 }}>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:12}}>
         {[
-          { val:"3.2×", label:"Sepet Artışı", color:C.lime },
-          { val:"%67", label:"UGC Paylaşım", color:C.pink },
-          { val:"%41", label:"İade Azalma", color:C.purple },
-        ].map(s => (
-          <GlassCard key={s.label} style={{ textAlign:"center", padding:"14px 8px" }}>
-            <div style={{ fontSize:22, fontWeight:900, color:s.color }}>{s.val}</div>
-            <div style={{ fontSize:10, color:C.muted, marginTop:2 }}>{s.label}</div>
+          {val:"3.2×",label:"Sepet Artışı",color:C.lime},
+          {val:"%67", label:"UGC Paylaşım",color:C.pink},
+          {val:"%41", label:"İade Azalma",color:C.purple},
+        ].map(s=>(
+          <GlassCard key={s.label} style={{textAlign:"center",padding:"14px 8px"}}>
+            <div style={{fontSize:22,fontWeight:900,color:s.color}}>{s.val}</div>
+            <div style={{fontSize:10,color:C.muted,marginTop:2}}>{s.label}</div>
           </GlassCard>
         ))}
       </div>
+
+      {/* Concept pillars */}
+      <GlassCard style={{marginBottom:8}}>
+        <div style={{fontSize:11,fontWeight:800,letterSpacing:2,color:C.muted,marginBottom:12}}>KONSEPT SÜTUNLARI</div>
+        {[
+          {icon:"🤖",title:"AI + Maskot Deneyimi",desc:"Xo rehberliğinde kişiselleştirilmiş stil"},
+          {icon:"🎵",title:"Spotify Entegrasyonu",desc:"Müzik zevki → AI kombin → viral paylaşım"},
+          {icon:"🔄",title:"O2O Köprü",desc:"Sosyal medya trafiğini mağazaya yönlendirme"},
+          {icon:"📊",title:"Veri Zekası",desc:"UGC verileriyle gelecek sezon ürün kararları"},
+        ].map(p=>(
+          <div key={p.title} style={{display:"flex",gap:12,alignItems:"flex-start",
+            padding:"10px 0",borderBottom:`1px solid ${C.glassBorder}`}}>
+            <span style={{fontSize:20,flexShrink:0}}>{p.icon}</span>
+            <div>
+              <div style={{fontWeight:800,fontSize:13}}>{p.title}</div>
+              <div style={{fontSize:11,color:C.muted,marginTop:2}}>{p.desc}</div>
+            </div>
+          </div>
+        ))}
+      </GlassCard>
+
+      {!apiKey && (
+        <div style={{background:`${C.purple}22`,border:`1px solid ${C.purple}44`,
+          borderRadius:16,padding:"14px 16px",textAlign:"center"}}>
+          <div style={{fontSize:13,marginBottom:10,color:"rgba(255,255,255,.8)"}}>
+            🤖 AI özelliklerini aktif etmek için API key ekle
+          </div>
+          <button onClick={onApiClick} style={{padding:"8px 20px",background:C.purple,
+            border:"none",borderRadius:20,color:"white",fontWeight:800,fontSize:12,cursor:"pointer"}}>
+            API Key Ekle
+          </button>
+        </div>
+      )}
     </div>
   );
 }
 
-/* ══ SPOTIFY TAB ═══════════════════════════════════════════════════════ */
-function SpotifyTab() {
-  const [connected, setConnected] = useState(false);
-  const [selected, setSelected] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [outfit, setOutfit] = useState(null);
-  const [coupon, setCoupon] = useState(null);
-  const [shared, setShared] = useState(false);
+/* ══ SPOTIFY ════════════════════════════════════════════════════════════ */
+function SpotifyTab({ apiKey }) {
+  const [connected,setConnected] = useState(false);
+  const [selected,setSelected] = useState(null);
+  const [loading,setLoading] = useState(false);
+  const [outfit,setOutfit] = useState(null);
+  const [shared,setShared] = useState(false);
+  const [coupon,setCoupon] = useState(null);
 
   const getOutfit = async (profile) => {
-    setSelected(profile);
-    setLoading(true);
-    setOutfit(null);
-    setCoupon(null);
-    setShared(false);
-    try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method:"POST",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({
-          model:"claude-sonnet-4-20250514",
-          max_tokens:1000,
-          system:`Sen XSIDE markasının Türkçe konuşan AI stil danışmanısın. XSIDE, LC Waikiki'nin genç kadın (15-25) markası.
-Ürün dünyası: basic örme tişört, boxy tişört, crop gömlek, denim şort, barrel jean, matching set, mini elbise, interlok takım, eşofman, nakışlı parçalar.
-Kullanıcının müzik zevkine göre XSIDE ürünlerinden 3 adet spesifik kombin öner. 
-Çıktı formatı: sadece JSON, hiç markdown yok.
-{
-  "vibe": "1 cümlelik vibe açıklaması",
-  "outfits": [
-    { "name": "Kombin adı", "items": ["ürün1","ürün2","ürün3"], "occasion": "ne zaman giy", "hashtags": ["#tag1","#tag2"] }
-  ],
-  "trendNote": "TikTok/IG'de bu vibeyle ilgili 1 trend notu"
-}`,
-          messages:[{ role:"user", content:`Müzik tarzı: ${profile.label}. Dinlediği sanatçılar: ${profile.artists.join(", ")}. Vibe: ${profile.vibe}. 3 XSIDE kombini öner.` }]
-        })
-      });
-      const data = await res.json();
-      const raw = data.content?.map(c=>c.text||"").join("") || "{}";
-      const clean = raw.replace(/```json|```/g,"").trim();
-      setOutfit(JSON.parse(clean));
-    } catch { setOutfit({ vibe:"Stil yükleniyor...", outfits:[], trendNote:"" }); }
+    setSelected(profile); setLoading(true); setOutfit(null); setShared(false); setCoupon(null);
+    let result = null;
+    if (apiKey) {
+      const raw = await callClaude(apiKey,
+        `Sen XSIDE markasının Türkçe AI stil danışmanısın. XSIDE = LC Waikiki genç kadın (15-25) markası.
+Ürünler: basic tişört, boxy tişört, crop gömlek, denim şort, barrel jean, matching set, mini elbise, interlok takım, eşofman, nakışlı parçalar.
+Müzik zevkine göre 2 XSIDE kombini öner. Sadece JSON döndür, markdown yok:
+{"vibe":"1 cümle","outfits":[{"name":"","items":["","",""],"occasion":"","hashtags":["",""]}],"trendNote":""}`,
+        `Müzik: ${profile.label}, Sanatçılar: ${profile.artists.join(", ")}, Vibe: ${profile.vibe}`
+      );
+      if (raw) { try { result = JSON.parse(raw.replace(/```json|```/g,"").trim()); } catch {} }
+    }
+    setOutfit(result || MOCK_OUTFITS[profile.id]);
     setLoading(false);
   };
 
   return (
-    <div style={{ padding:"20px 16px 8px" }}>
-      <div style={{ marginBottom:20 }}>
-        <div style={{ fontSize:11, letterSpacing:3, color:C.muted }}>AI STYLE ENGINE</div>
-        <h2 style={{ margin:"4px 0 0", fontSize:22, fontWeight:900 }}>🎵 Müziğin = Tarzın</h2>
-        <p style={{ color:C.muted, fontSize:13, margin:"4px 0 0" }}>Spotify'ı bağla, AI stilini keşfetsin</p>
+    <div style={{padding:"20px 16px 8px"}} className="fade-in">
+      <div style={{marginBottom:20}}>
+        <div style={{fontSize:10,letterSpacing:3,color:C.muted}}>AI STYLE ENGINE</div>
+        <h2 style={{margin:"4px 0 0",fontSize:22,fontWeight:900}}>🎵 Müziğin = Tarzın</h2>
+        <p style={{color:C.muted,fontSize:13,margin:"4px 0 0"}}>Spotify'ı bağla, AI stilini keşfetsin</p>
       </div>
 
       {!connected ? (
-        <GlassCard style={{ textAlign:"center", padding:32, marginBottom:16 }}>
-          <div style={{ fontSize:48, marginBottom:12 }}>🎧</div>
-          <div style={{ fontWeight:800, fontSize:16, marginBottom:6 }}>Spotify'ı Bağla</div>
-          <div style={{ color:C.muted, fontSize:13, marginBottom:20 }}>Müzik zevkini okuyalım, sana özel kombin önerelim</div>
-          <button style={{ background:"#1DB954", border:"none", borderRadius:24, padding:"12px 28px",
-            color:"white", fontWeight:800, fontSize:14, cursor:"pointer",
-            boxShadow:"0 6px 20px rgba(29,185,84,.4)" }}
-            onClick={() => setConnected(true)}>
+        <GlassCard style={{textAlign:"center",padding:32,marginBottom:16}}>
+          <div style={{fontSize:48,marginBottom:12}}>🎧</div>
+          <div style={{fontWeight:800,fontSize:16,marginBottom:6}}>Spotify'ı Bağla</div>
+          <div style={{color:C.muted,fontSize:13,marginBottom:20}}>Müzik zevkini okuyalım, sana özel kombin önerelim</div>
+          <button style={{background:"#1DB954",border:"none",borderRadius:24,padding:"12px 28px",
+            color:"white",fontWeight:800,fontSize:14,cursor:"pointer",
+            boxShadow:"0 6px 20px rgba(29,185,84,.4)"}} onClick={()=>setConnected(true)}>
             Spotify ile Bağlan
           </button>
-          <div style={{ color:C.muted, fontSize:11, marginTop:10 }}>Demo: Müzik profili seç</div>
+          <div style={{color:C.muted,fontSize:11,marginTop:10}}>Demo: müzik profili seçerek devam et</div>
         </GlassCard>
       ) : (
         <>
-          <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:16,
-            background:"rgba(29,185,84,.12)", border:"1px solid rgba(29,185,84,.3)",
-            borderRadius:12, padding:"10px 14px" }}>
-            <span style={{ fontSize:18 }}>✅</span>
-            <span style={{ fontSize:13, fontWeight:700, color:"#1DB954" }}>Spotify Bağlı</span>
+          <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:16,
+            background:"rgba(29,185,84,.12)",border:"1px solid rgba(29,185,84,.3)",
+            borderRadius:12,padding:"10px 14px"}}>
+            <span style={{fontSize:16}}>✅</span>
+            <span style={{fontSize:13,fontWeight:700,color:"#1DB954"}}>Spotify Bağlı</span>
+            {!apiKey && <span style={{fontSize:11,color:C.muted,marginLeft:"auto"}}>Demo modu</span>}
           </div>
-
-          <div style={{ fontSize:12, fontWeight:800, letterSpacing:2, color:C.muted, marginBottom:10 }}>
-            MÜZİK PROFİLİNİ SEÇ
-          </div>
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8, marginBottom:16 }}>
-            {SPOTIFY_PROFILES.map(p => (
-              <GlassCard key={p.id} onClick={() => getOutfit(p)} style={{
-                padding:"12px 14px", cursor:"pointer",
-                border: selected?.id===p.id ? `1px solid ${p.color}` : `1px solid ${C.glassBorder}`,
-                background: selected?.id===p.id ? `${p.color}15` : C.glass,
-              }}>
-                <div style={{ fontSize:22 }}>{p.emoji}</div>
-                <div style={{ fontWeight:800, fontSize:13, marginTop:4 }}>{p.label}</div>
-                <div style={{ fontSize:10, color:C.muted, marginTop:2 }}>{p.artists.slice(0,2).join(" · ")}</div>
+          <div style={{fontSize:11,fontWeight:800,letterSpacing:2,color:C.muted,marginBottom:10}}>MÜZİK PROFİLİNİ SEÇ</div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:16}}>
+            {PROFILES.map(p=>(
+              <GlassCard key={p.id} onClick={()=>getOutfit(p)} style={{padding:"12px 14px",cursor:"pointer",
+                border:selected?.id===p.id?`1px solid ${p.color}`:`1px solid ${C.glassBorder}`,
+                background:selected?.id===p.id?`${p.color}18`:C.glass}}>
+                <div style={{fontSize:22}}>{p.emoji}</div>
+                <div style={{fontWeight:800,fontSize:13,marginTop:4}}>{p.label}</div>
+                <div style={{fontSize:10,color:C.muted,marginTop:2}}>{p.artists.slice(0,2).join(" · ")}</div>
               </GlassCard>
             ))}
           </div>
 
           {loading && (
-            <div style={{ textAlign:"center", padding:32 }}>
-              <Monkey size={60} animate />
-              <div style={{ color:C.muted, fontSize:13, marginTop:8 }}>AI stilini analiz ediyor...</div>
+            <div style={{textAlign:"center",padding:32}}>
+              <Monkey size={60} animate/>
+              <div style={{color:C.muted,fontSize:13,marginTop:8}}>AI stilini analiz ediyor...</div>
             </div>
           )}
 
           {outfit && !loading && (
-            <div>
-              <GlassCard style={{ marginBottom:12, background:`${selected.color}12`, border:`1px solid ${selected.color}33` }}>
-                <div style={{ fontSize:12, color:selected.color, fontWeight:800, marginBottom:4 }}>VİBE</div>
-                <div style={{ fontSize:14, fontWeight:700 }}>{outfit.vibe}</div>
-                {outfit.trendNote && <div style={{ fontSize:12, color:C.muted, marginTop:6 }}>📱 {outfit.trendNote}</div>}
+            <div className="fade-in">
+              <GlassCard style={{marginBottom:12,background:`${selected.color}12`,border:`1px solid ${selected.color}33`}}>
+                <div style={{fontSize:11,color:selected.color,fontWeight:800,marginBottom:4}}>VİBE</div>
+                <div style={{fontSize:14,fontWeight:700}}>{outfit.vibe}</div>
+                {outfit.trendNote && <div style={{fontSize:12,color:C.muted,marginTop:6}}>📱 {outfit.trendNote}</div>}
               </GlassCard>
 
-              {outfit.outfits?.map((o,i) => (
-                <GlassCard key={i} style={{ marginBottom:10 }}>
-                  <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:8 }}>
-                    <div style={{ fontWeight:800, fontSize:14 }}>Kombin {i+1}: {o.name}</div>
-                    <PillBadge color={selected.color}>{o.occasion}</PillBadge>
+              {outfit.outfits?.map((o,i)=>(
+                <GlassCard key={i} style={{marginBottom:10}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
+                    <div style={{fontWeight:800,fontSize:14}}>Kombin {i+1}: {o.name}</div>
+                    <Pill color={selected.color}>{o.occasion}</Pill>
                   </div>
-                  <div style={{ display:"flex", flexDirection:"column", gap:4, marginBottom:8 }}>
-                    {o.items?.map((item,j) => (
-                      <div key={j} style={{ display:"flex", alignItems:"center", gap:8, fontSize:13 }}>
-                        <span style={{ color:C.lime }}>→</span>
-                        <span>{item}</span>
+                  <div style={{display:"flex",flexDirection:"column",gap:4,marginBottom:8}}>
+                    {o.items?.map((item,j)=>(
+                      <div key={j} style={{display:"flex",alignItems:"center",gap:8,fontSize:13}}>
+                        <span style={{color:C.lime}}>→</span><span>{item}</span>
                       </div>
                     ))}
                   </div>
-                  <div style={{ display:"flex", gap:4, flexWrap:"wrap" }}>
-                    {o.hashtags?.map(h => <PillBadge key={h} color={C.pink}>{h}</PillBadge>)}
-                    <PillBadge color={C.pink}>#XSIDEStyle</PillBadge>
+                  <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>
+                    {o.hashtags?.map(h=><Pill key={h} color={C.pink}>{h}</Pill>)}
+                    <Pill color={C.pink}>#XSIDEStyle</Pill>
                   </div>
                 </GlassCard>
               ))}
 
               {!shared ? (
-                <button style={{ width:"100%", padding:"14px", background:`linear-gradient(90deg,${C.pink},#ff6b9d)`,
-                  border:"none", borderRadius:14, color:"white", fontWeight:800, fontSize:14, cursor:"pointer",
-                  marginTop:8, boxShadow:`0 6px 24px ${C.pink}44` }}
-                  onClick={() => { setShared(true); setCoupon(genCoupon("SPOTIFY")); }}>
+                <Btn onClick={()=>{setShared(true);setCoupon(genCoupon("SPOTIFY"));}}>
                   📲 #XSIDEStyle ile paylaş → Kupon kazan!
-                </button>
+                </Btn>
               ) : (
-                <div style={{ background:`linear-gradient(135deg,${C.pink},#ff6b9d)`,
-                  borderRadius:20, padding:"18px 20px", border:"2px dashed rgba(255,255,255,.4)",
-                  boxShadow:`0 8px 30px ${C.pink}44`, marginTop:8 }}>
-                  <div style={{ fontSize:11, fontWeight:700, letterSpacing:3, color:"rgba(255,255,255,.7)", marginBottom:4 }}>XSIDE KUPON</div>
-                  <div style={{ fontSize:13, marginBottom:10 }}>🎵 Spotify Stil Ödülü</div>
-                  <div style={{ background:"rgba(0,0,0,.25)", borderRadius:10, padding:"10px 14px" }}>
-                    <span style={{ fontFamily:"monospace", fontSize:22, fontWeight:900, color:C.lime, letterSpacing:3 }}>{coupon}</span>
+                <div style={{background:`linear-gradient(135deg,${C.pink},#ff6b9d)`,
+                  borderRadius:20,padding:"18px 20px",border:"2px dashed rgba(255,255,255,.4)",
+                  boxShadow:`0 8px 30px ${C.pink}44`,marginTop:8}} className="fade-in">
+                  <div style={{fontSize:10,fontWeight:700,letterSpacing:3,color:"rgba(255,255,255,.7)",marginBottom:4}}>XSIDE KUPON</div>
+                  <div style={{fontSize:13,marginBottom:10}}>🎵 Spotify Stil Ödülü</div>
+                  <div style={{background:"rgba(0,0,0,.25)",borderRadius:10,padding:"10px 14px",
+                    display:"flex",justifyContent:"space-between",alignItems:"center",cursor:"pointer"}}
+                    onClick={()=>navigator.clipboard?.writeText(coupon)}>
+                    <span style={{fontFamily:"monospace",fontSize:22,fontWeight:900,color:C.lime,letterSpacing:3}}>{coupon}</span>
+                    <span style={{fontSize:12,color:"rgba(255,255,255,.7)"}}>Kopyala</span>
                   </div>
-                  <div style={{ fontSize:11, color:"rgba(255,255,255,.7)", marginTop:8 }}>LC Waikiki & xside.com'da geçerli</div>
+                  <div style={{fontSize:11,color:"rgba(255,255,255,.7)",marginTop:8}}>LC Waikiki & xside.com'da geçerli</div>
                 </div>
               )}
             </div>
@@ -376,101 +456,84 @@ Kullanıcının müzik zevkine göre XSIDE ürünlerinden 3 adet spesifik kombin
   );
 }
 
-/* ══ CHAT TAB ══════════════════════════════════════════════════════════ */
-function ChatTab() {
-  const [msgs, setMsgs] = useState([
-    { role:"bot", text:"Merhaba! 🙈 Ben **Xo**, XSIDE'ın stil asistanı! Sana TikTok trendlerine göre en ateşli kombinleri öneriyorum 🔥" },
-    { role:"bot", text:"Bugün nasıl bir vibe istiyorsun?", suggestions:["☀️ Yazlık Casual","🏙️ Street Look","📸 IG / TikTok Outfit","🎓 Okul Kombini"] }
+/* ══ CHAT ════════════════════════════════════════════════════════════════ */
+function ChatTab({ apiKey }) {
+  const [msgs,setMsgs] = useState([
+    {role:"bot",text:"Merhaba! 🙈 Ben **Xo**, XSIDE'ın AI stil asistanı! TikTok trendlerine göre en ateşli kombinleri seninle keşfediyoruz 🔥"},
+    {role:"bot",text:"Bugün nasıl bir vibe istiyorsun?",suggestions:["☀️ Yazlık Casual","🏙️ Street Look","📸 İçerik Çekimi","🎓 Okul Kombini"]}
   ]);
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [shareShown, setShareShown] = useState(false);
+  const [input,setInput] = useState("");
+  const [loading,setLoading] = useState(false);
+  const [mockIdx,setMockIdx] = useState(0);
   const endRef = useRef(null);
 
-  useEffect(() => { endRef.current?.scrollIntoView({ behavior:"smooth" }); }, [msgs, loading]);
+  useEffect(()=>{ endRef.current?.scrollIntoView({behavior:"smooth"}); },[msgs,loading]);
 
   const send = async (text) => {
-    const msg = text || input.trim();
-    if (!msg) return;
-    setInput("");
-    setMsgs(p => [...p, { role:"user", text:msg }]);
-    setLoading(true);
-    try {
-      const history = msgs.filter(m=>m.text).map(m=>({ role:m.role==="bot"?"assistant":"user", content:m.text.replace(/\*\*/g,"") }));
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method:"POST", headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({
-          model:"claude-sonnet-4-20250514", max_tokens:1000,
-          system:`Sen Xo, XSIDE markasının GenZ diline hakim maskot chatbotusun. XSIDE = LC Waikiki'nin 15-25 yaş kadın markası.
+    const msg = text||input.trim(); if(!msg) return;
+    setInput(""); setMsgs(p=>[...p,{role:"user",text:msg}]); setLoading(true);
+    let reply = null;
+    if (apiKey) {
+      const history = msgs.filter(m=>m.text).map(m=>({role:m.role==="bot"?"assistant":"user",content:m.text.replace(/\*\*/g,"")}));
+      reply = await callClaude(apiKey,
+        `Sen Xo, XSIDE markasının GenZ diline hakim maskot chatbotusun. XSIDE = LC Waikiki 15-25 yaş kadın markası.
 Ürünler: basic tişört, boxy tişört, crop gömlek, kargo jean, barrel jean, mini elbise, matching set, eşofman vb.
-- Her yanıtta 1-2 XSIDE ürün kombini öner (somut ürün adı + renk)
+- Her yanıtta 1-2 XSIDE ürün kombini öner (somut ürün + renk)
 - TikTok/IG trend referansı ekle
 - Türkçe, kısa (max 4 cümle), enerjik, emoji kullan
-- Son kısımda "#XSIDEStyle ile paylaş, kupon kazan! 🎁" ekle`,
-          messages:[...history, { role:"user", content:msg }]
-        })
-      });
-      const data = await res.json();
-      const botText = data.content?.map(c=>c.text||"").join("") || "Hata oluştu 🙈";
-      setMsgs(p => [...p, { role:"bot", text:botText, showShare:botText.includes("#XSIDEStyle") }]);
-      if (!shareShown && botText.includes("#XSIDEStyle")) setShareShown(true);
-    } catch { setMsgs(p => [...p, { role:"bot", text:"Bağlantı hatası 🙈" }]); }
+- Sona "#XSIDEStyle ile paylaş, kupon kazan! 🎁" ekle`,
+        msg, history
+      );
+    }
+    if (!reply) { reply = MOCK_CHAT[mockIdx % MOCK_CHAT.length]; setMockIdx(p=>p+1); }
+    setMsgs(p=>[...p,{role:"bot",text:reply,showShare:reply.includes("#XSIDEStyle")}]);
     setLoading(false);
   };
 
   return (
-    <div style={{ display:"flex", flexDirection:"column", height:"calc(100vh - 72px)" }}>
-      {/* Header */}
-      <div style={{ padding:"14px 16px", background:"rgba(7,6,15,.85)", backdropFilter:"blur(20px)",
-        borderBottom:`1px solid ${C.glassBorder}`, display:"flex", alignItems:"center", gap:10 }}>
-        <div style={{ position:"relative" }}>
+    <div style={{display:"flex",flexDirection:"column",height:"calc(100vh - 72px)"}}>
+      <div style={{padding:"14px 16px",background:"rgba(7,6,15,.9)",backdropFilter:"blur(20px)",
+        borderBottom:`1px solid ${C.glassBorder}`,display:"flex",alignItems:"center",gap:10}}>
+        <div style={{position:"relative"}}>
           <Monkey size={40}/>
-          <div style={{ width:9, height:9, background:"#00E676", border:`2px solid ${C.dark}`,
-            borderRadius:"50%", position:"absolute", bottom:2, right:2 }}/>
+          <div style={{width:9,height:9,background:"#00E676",border:`2px solid ${C.dark}`,
+            borderRadius:"50%",position:"absolute",bottom:2,right:2}}/>
         </div>
         <div>
-          <div style={{ fontWeight:900, fontSize:15 }}>Xo 🙈</div>
-          <div style={{ fontSize:11, color:C.muted }}>XSIDE AI Stil Asistanı • Aktif</div>
+          <div style={{fontWeight:900,fontSize:15}}>Xo 🙈</div>
+          <div style={{fontSize:11,color:C.muted}}>XSIDE AI Stil Asistanı • Aktif</div>
         </div>
-        <div style={{ marginLeft:"auto", background:`${C.pink}22`, border:`1px solid ${C.pink}55`,
-          borderRadius:20, padding:"4px 10px", fontSize:10, fontWeight:700, color:C.pink }}>#XSIDEStyle</div>
+        <div style={{marginLeft:"auto",background:`${C.pink}22`,border:`1px solid ${C.pink}55`,
+          borderRadius:20,padding:"4px 10px",fontSize:10,fontWeight:700,color:C.pink}}>#XSIDEStyle</div>
       </div>
 
-      {/* Messages */}
-      <div style={{ flex:1, overflowY:"auto", padding:"14px 12px" }}>
-        {msgs.map((m,i) => (
-          <div key={i}>
-            <div style={{ display:"flex", justifyContent:m.role==="user"?"flex-end":"flex-start",
-              marginBottom:6, gap:6, alignItems:"flex-end" }}>
+      <div style={{flex:1,overflowY:"auto",padding:"14px 12px"}}>
+        {msgs.map((m,i)=>(
+          <div key={i} className="fade-in">
+            <div style={{display:"flex",justifyContent:m.role==="user"?"flex-end":"flex-start",
+              marginBottom:6,gap:6,alignItems:"flex-end"}}>
               {m.role==="bot" && <Monkey size={28}/>}
-              <div style={{
-                maxWidth:"78%", padding:"10px 14px", fontSize:13, lineHeight:1.6, color:C.white,
-                background: m.role==="user"
-                  ? `linear-gradient(135deg,${C.pink},#ff6b9d)`
-                  : C.glass,
-                borderRadius: m.role==="user" ? "18px 18px 4px 18px" : "18px 18px 18px 4px",
-                border: m.role==="bot" ? `1px solid ${C.glassBorder}` : "none",
-                backdropFilter:"blur(10px)"
-              }}>
-                {m.text?.split("**").map((p,j) => j%2===1 ? <b key={j}>{p}</b> : p)}
+              <div style={{maxWidth:"78%",padding:"10px 14px",fontSize:13,lineHeight:1.6,color:C.white,
+                background:m.role==="user"?`linear-gradient(135deg,${C.pink},#ff6b9d)`:C.glass,
+                borderRadius:m.role==="user"?"18px 18px 4px 18px":"18px 18px 18px 4px",
+                border:m.role==="bot"?`1px solid ${C.glassBorder}`:"none",backdropFilter:"blur(10px)"}}>
+                {m.text?.split("**").map((p,j)=>j%2===1?<b key={j}>{p}</b>:p)}
               </div>
             </div>
             {m.suggestions && (
-              <div style={{ display:"flex", gap:6, flexWrap:"wrap", marginLeft:34, marginBottom:8 }}>
-                {m.suggestions.map(s => (
-                  <button key={s} style={{ padding:"6px 12px", background:C.glass,
-                    border:`1px solid ${C.glassBorder}`, borderRadius:20, color:C.white,
-                    fontSize:12, fontWeight:600, cursor:"pointer" }}
-                    onClick={() => send(s)}>{s}</button>
+              <div style={{display:"flex",gap:6,flexWrap:"wrap",marginLeft:34,marginBottom:8}}>
+                {m.suggestions.map(s=>(
+                  <button key={s} onClick={()=>send(s)} style={{padding:"6px 12px",background:C.glass,
+                    border:`1px solid ${C.glassBorder}`,borderRadius:20,color:C.white,
+                    fontSize:12,fontWeight:600,cursor:"pointer"}}>{s}</button>
                 ))}
               </div>
             )}
             {m.showShare && (
-              <div style={{ marginLeft:34, marginBottom:8 }}>
-                <button style={{ padding:"8px 16px", background:`linear-gradient(90deg,${C.pink},#ff6b9d)`,
-                  border:"none", borderRadius:20, color:"white", fontSize:12, fontWeight:800, cursor:"pointer" }}
-                  onClick={() => setMsgs(p => [...p, { role:"bot",
-                    text:`🎉 Süper! İşte kuponun: **${genCoupon("XO")}** — LC Waikiki'de geçerli!` }])}>
+              <div style={{marginLeft:34,marginBottom:8}}>
+                <button onClick={()=>setMsgs(p=>[...p,{role:"bot",text:`🎉 Harika! İşte kuponun: **${genCoupon("XO")}** — LC Waikiki'de geçerli! 🎁`}])}
+                  style={{padding:"8px 16px",background:`linear-gradient(90deg,${C.pink},#ff6b9d)`,
+                    border:"none",borderRadius:20,color:"white",fontSize:12,fontWeight:800,cursor:"pointer"}}>
                   📲 Paylaş & Kupon Al!
                 </button>
               </div>
@@ -478,29 +541,28 @@ function ChatTab() {
           </div>
         ))}
         {loading && (
-          <div style={{ display:"flex", gap:6, alignItems:"flex-end", marginBottom:6 }}>
+          <div style={{display:"flex",gap:6,alignItems:"flex-end",marginBottom:6}}>
             <Monkey size={28}/>
-            <div style={{ background:C.glass, borderRadius:18, padding:"10px 14px",
-              border:`1px solid ${C.glassBorder}`, display:"flex", gap:4 }}>
-              {[0,1,2].map(i => <div key={i} style={{ width:7, height:7, borderRadius:"50%",
-                background:C.pink, animation:`dot 1.2s ease ${i*.2}s infinite` }}/>)}
+            <div style={{background:C.glass,borderRadius:18,padding:"10px 14px",
+              border:`1px solid ${C.glassBorder}`,display:"flex",gap:4}}>
+              {[0,1,2].map(i=><div key={i} style={{width:7,height:7,borderRadius:"50%",
+                background:C.pink,animation:`dot 1.2s ease ${i*.2}s infinite`}}/>)}
             </div>
           </div>
         )}
         <div ref={endRef}/>
       </div>
 
-      {/* Input */}
-      <div style={{ padding:"10px 12px", background:"rgba(7,6,15,.9)", backdropFilter:"blur(20px)",
-        borderTop:`1px solid ${C.glassBorder}`, display:"flex", gap:8 }}>
+      <div style={{padding:"10px 12px",background:"rgba(7,6,15,.92)",backdropFilter:"blur(20px)",
+        borderTop:`1px solid ${C.glassBorder}`,display:"flex",gap:8}}>
         <input value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&send()}
           placeholder="Xo'ya sor... 🙈"
-          style={{ flex:1, padding:"11px 16px", background:C.glass, border:`1px solid ${C.glassBorder}`,
-            borderRadius:24, color:C.white, fontSize:13, outline:"none", colorScheme:"dark" }}/>
-        <button onClick={()=>send()} style={{ width:44, height:44, borderRadius:"50%",
-          background:`linear-gradient(135deg,${C.pink},#ff6b9d)`, border:"none",
-          cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
-          boxShadow:`0 4px 16px ${C.pink}44`, flexShrink:0 }}>
+          style={{flex:1,padding:"11px 16px",background:C.glass,border:`1px solid ${C.glassBorder}`,
+            borderRadius:24,color:C.white,fontSize:13,outline:"none",colorScheme:"dark"}}/>
+        <button onClick={()=>send()} style={{width:44,height:44,borderRadius:"50%",
+          background:`linear-gradient(135deg,${C.pink},#ff6b9d)`,border:"none",
+          cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",
+          boxShadow:`0 4px 16px ${C.pink}44`,flexShrink:0}}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
             <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
           </svg>
@@ -510,78 +572,60 @@ function ChatTab() {
   );
 }
 
-/* ══ STORE TAB ═════════════════════════════════════════════════════════ */
+/* ══ STORE ═══════════════════════════════════════════════════════════════ */
 function StoreTab() {
-  const [filter, setFilter] = useState("all");
-  const [selected, setSelected] = useState(null);
-
-  const filtered = filter==="hot" ? STORE_STOCK.filter(s=>s.hot) : STORE_STOCK;
-
+  const [filter,setFilter] = useState("all");
+  const [sel,setSel] = useState(null);
+  const filtered = filter==="hot" ? STORE.filter(s=>s.hot) : STORE;
   return (
-    <div style={{ padding:"20px 16px 8px" }}>
-      <div style={{ marginBottom:16 }}>
-        <div style={{ fontSize:11, letterSpacing:3, color:C.muted }}>MAĞAZA EKRANI</div>
-        <h2 style={{ margin:"4px 0 0", fontSize:22, fontWeight:900 }}>🏪 Anlık Stok & Kombin</h2>
-        <p style={{ color:C.muted, fontSize:13, margin:"4px 0 0" }}>AI ile doğru ürün, doğru stil</p>
+    <div style={{padding:"20px 16px 8px"}} className="fade-in">
+      <div style={{marginBottom:16}}>
+        <div style={{fontSize:10,letterSpacing:3,color:C.muted}}>MAĞAZA EKRANI</div>
+        <h2 style={{margin:"4px 0 0",fontSize:22,fontWeight:900}}>🏪 Anlık Stok & Kombin</h2>
+        <p style={{color:C.muted,fontSize:13,margin:"4px 0 0"}}>AI ile doğru ürün, doğru stil</p>
       </div>
-
-      {/* Store Screen Banner */}
-      <div style={{ background:`linear-gradient(135deg,${C.dark3},#1a0a3e)`,
-        borderRadius:16, padding:"14px 16px", marginBottom:16,
-        border:`1px solid ${C.purple}44`, position:"relative", overflow:"hidden" }}>
-        <div style={{ position:"absolute", top:0, right:0, width:80, height:80,
-          background:`radial-gradient(${C.purple}44,transparent)`, borderRadius:"0 16px 0 80px" }}/>
-        <div style={{ fontSize:10, letterSpacing:3, color:C.purple, fontWeight:700 }}>MAĞAZA İÇİ EKRAN MODU</div>
-        <div style={{ fontSize:14, fontWeight:800, marginTop:4 }}>Dokunmatik Stil Asistanı</div>
-        <div style={{ fontSize:12, color:C.muted, marginTop:2 }}>Müşteri QR tarar → Xo ekranda karşılar → Stok + kombin önerir</div>
+      <div style={{background:`linear-gradient(135deg,${C.dark3},#1a0a3e)`,borderRadius:16,
+        padding:"14px 16px",marginBottom:16,border:`1px solid ${C.purple}44`}}>
+        <div style={{fontSize:10,letterSpacing:3,color:C.purple,fontWeight:700}}>MAĞAZA İÇİ EKRAN MODU</div>
+        <div style={{fontWeight:800,fontSize:14,marginTop:4}}>Dokunmatik Stil Asistanı</div>
+        <div style={{fontSize:12,color:C.muted,marginTop:2}}>Müşteri QR tarar → Xo ekranda karşılar → Stok + kombin önerir</div>
       </div>
-
-      {/* Filter */}
-      <div style={{ display:"flex", gap:8, marginBottom:12 }}>
-        {[{id:"all",label:"Tümü"},{id:"hot",label:"🔥 Trend"}].map(f => (
+      <div style={{display:"flex",gap:8,marginBottom:12}}>
+        {[{id:"all",label:"Tümü"},{id:"hot",label:"🔥 Trend"}].map(f=>(
           <button key={f.id} onClick={()=>setFilter(f.id)} style={{
-            padding:"7px 16px", background:filter===f.id?C.pink:C.glass,
+            padding:"7px 16px",background:filter===f.id?C.pink:C.glass,
             border:`1px solid ${filter===f.id?C.pink:C.glassBorder}`,
-            borderRadius:20, color:C.white, fontSize:12, fontWeight:700, cursor:"pointer"
-          }}>{f.label}</button>
+            borderRadius:20,color:C.white,fontSize:12,fontWeight:700,cursor:"pointer"}}>{f.label}</button>
         ))}
       </div>
-
-      {/* Stock Grid */}
-      {filtered.map(item => (
-        <GlassCard key={item.name} style={{ marginBottom:10, cursor:"pointer",
-          border: selected?.name===item.name ? `1px solid ${C.pink}` : `1px solid ${C.glassBorder}` }}
-          onClick={()=>setSelected(selected?.name===item.name ? null : item)}>
-          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
+      {filtered.map(item=>(
+        <GlassCard key={item.name} style={{marginBottom:10,cursor:"pointer",
+          border:sel?.name===item.name?`1px solid ${C.pink}`:`1px solid ${C.glassBorder}`}}
+          onClick={()=>setSel(sel?.name===item.name?null:item)}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
             <div>
-              <div style={{ fontWeight:800, fontSize:14 }}>{item.name}</div>
-              <div style={{ fontSize:12, color:C.muted, marginTop:2 }}>Bedenler: {item.sizes.join(" · ")}</div>
+              <div style={{fontWeight:800,fontSize:14}}>{item.name}</div>
+              <div style={{fontSize:12,color:C.muted,marginTop:2}}>Beden: {item.sizes.join(" · ")}</div>
             </div>
-            <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end", gap:4 }}>
-              {item.hot && <PillBadge color={C.pink}>🔥 Trend</PillBadge>}
-              <div style={{ fontSize:12, color: item.stock<6?"#FF6B6B":C.lime, fontWeight:700 }}>
-                Stok: {item.stock} adet
-              </div>
+            <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:4}}>
+              {item.hot && <Pill color={C.pink}>🔥 Trend</Pill>}
+              <div style={{fontSize:12,color:item.stock<6?"#FF6B6B":C.lime,fontWeight:700}}>Stok: {item.stock}</div>
             </div>
           </div>
-
-          <div style={{ display:"flex", gap:4, flexWrap:"wrap", marginTop:8 }}>
-            {item.colors.map(c => (
-              <span key={c} style={{ padding:"3px 8px", background:C.glass, border:`1px solid ${C.glassBorder}`,
-                borderRadius:20, fontSize:11, color:C.muted }}>🎨 {c}</span>
-            ))}
+          <div style={{display:"flex",gap:4,flexWrap:"wrap",marginTop:8}}>
+            {item.colors.map(c=><span key={c} style={{padding:"3px 8px",background:C.glass,
+              border:`1px solid ${C.glassBorder}`,borderRadius:20,fontSize:11,color:C.muted}}>🎨 {c}</span>)}
           </div>
-
-          {selected?.name===item.name && (
-            <div style={{ marginTop:12, padding:"10px 0 0", borderTop:`1px solid ${C.glassBorder}` }}>
-              <div style={{ fontSize:12, color:C.lime, fontWeight:700, marginBottom:6 }}>✨ AI Kombin Önerisi</div>
-              <div style={{ fontSize:12, color:C.muted }}>
-                Bu parçayı <b style={{color:C.white}}>Barrel Jean</b> veya <b style={{color:C.white}}>Eşofman Altı</b> ile kombin yap. 
-                Renk önerisi: <b style={{color:C.white}}>{item.colors[0]}</b> beden için <b style={{color:C.white}}>S veya M</b> ideal.
+          {sel?.name===item.name && (
+            <div style={{marginTop:12,padding:"10px 0 0",borderTop:`1px solid ${C.glassBorder}`}} className="fade-in">
+              <div style={{fontSize:12,color:C.lime,fontWeight:700,marginBottom:6}}>✨ AI Kombin Önerisi</div>
+              <div style={{fontSize:12,color:C.muted}}>
+                Bu parçayı <b style={{color:C.white}}>Barrel Jean</b> veya <b style={{color:C.white}}>Eşofman Altı</b> ile kombin yap.
+                Renk: <b style={{color:C.white}}>{item.colors[0]}</b>, ideal beden: <b style={{color:C.white}}>{item.sizes[1]||item.sizes[0]}</b>.
               </div>
-              <div style={{ marginTop:8 }}>
-                <PillBadge color={C.lime}>#XSIDEStyle</PillBadge>{" "}
-                <PillBadge color={C.pink}>Fotoğraf çek & paylaş 📸</PillBadge>
+              <div style={{marginTop:8,display:"flex",gap:6,flexWrap:"wrap"}}>
+                <Pill color={C.lime}>#XSIDEStyle</Pill>
+                <Pill color={C.pink}>Fotoğraf çek & paylaş 📸</Pill>
               </div>
             </div>
           )}
@@ -591,80 +635,69 @@ function StoreTab() {
   );
 }
 
-/* ══ COMMUNITY TAB ═════════════════════════════════════════════════════ */
+/* ══ COMMUNITY ═══════════════════════════════════════════════════════════ */
 function CommunityTab() {
-  const [joined, setJoined] = useState({});
-
+  const [joined,setJoined] = useState({});
   return (
-    <div style={{ padding:"20px 16px 8px" }}>
-      <div style={{ marginBottom:20 }}>
-        <div style={{ fontSize:11, letterSpacing:3, color:C.muted }}>XSIDE LIFE</div>
-        <h2 style={{ margin:"4px 0 0", fontSize:22, fontWeight:900 }}>🎪 Topluluk & Etkinlikler</h2>
-        <p style={{ color:C.muted, fontSize:13, margin:"4px 0 0" }}>Üniversite festivalleri · Workshop · Pop-up</p>
+    <div style={{padding:"20px 16px 8px"}} className="fade-in">
+      <div style={{marginBottom:20}}>
+        <div style={{fontSize:10,letterSpacing:3,color:C.muted}}>XSIDE LIFE</div>
+        <h2 style={{margin:"4px 0 0",fontSize:22,fontWeight:900}}>🎪 Topluluk & Etkinlikler</h2>
+        <p style={{color:C.muted,fontSize:13,margin:"4px 0 0"}}>Üniversite festivalleri · Workshop · Pop-up</p>
       </div>
-
-      {/* XSIDE Life Card */}
-      <div style={{ background:`linear-gradient(135deg,${C.pink}22,${C.purple}22)`,
-        border:`1px solid ${C.pink}44`, borderRadius:20, padding:"18px 20px", marginBottom:16 }}>
-        <div style={{ display:"flex", gap:12, alignItems:"center" }}>
-          <Monkey size={52}/>
-          <div>
-            <div style={{ fontWeight:900, fontSize:16 }}>XSIDE Life Ekibi</div>
-            <div style={{ fontSize:12, color:C.muted, marginTop:2 }}>Müşterilerle birlikte workshop, tasarım atölyeleri ve deneyim alanları</div>
-          </div>
+      <div style={{background:`linear-gradient(135deg,${C.pink}22,${C.purple}22)`,
+        border:`1px solid ${C.pink}44`,borderRadius:20,padding:"18px 20px",marginBottom:16,
+        display:"flex",gap:12,alignItems:"center"}}>
+        <Monkey size={52}/>
+        <div>
+          <div style={{fontWeight:900,fontSize:16}}>XSIDE Life Ekibi</div>
+          <div style={{fontSize:12,color:C.muted,marginTop:2}}>Müşterilerle birlikte workshop, tasarım atölyeleri ve deneyim alanları</div>
         </div>
       </div>
-
-      {/* Events */}
-      <div style={{ fontSize:12, fontWeight:800, letterSpacing:2, color:C.muted, marginBottom:10 }}>ETKİNLİK TAKVİMİ</div>
-      {EVENTS.map(ev => (
-        <GlassCard key={ev.title} style={{ marginBottom:10, display:"flex", alignItems:"center", gap:12 }}>
-          <div style={{ background:`${C.pink}22`, border:`1px solid ${C.pink}44`,
-            borderRadius:12, padding:"10px 8px", textAlign:"center", minWidth:48 }}>
-            <div style={{ fontSize:18 }}>{ev.emoji}</div>
-            <div style={{ fontSize:10, fontWeight:800, color:C.pink, marginTop:2 }}>{ev.date}</div>
+      <div style={{fontSize:11,fontWeight:800,letterSpacing:2,color:C.muted,marginBottom:10}}>ETKİNLİK TAKVİMİ</div>
+      {EVENTS.map(ev=>(
+        <GlassCard key={ev.title} style={{marginBottom:10,display:"flex",alignItems:"center",gap:12}}>
+          <div style={{background:`${C.pink}22`,border:`1px solid ${C.pink}44`,
+            borderRadius:12,padding:"10px 8px",textAlign:"center",minWidth:50}}>
+            <div style={{fontSize:18}}>{ev.emoji}</div>
+            <div style={{fontSize:10,fontWeight:800,color:C.pink,marginTop:2}}>{ev.date}</div>
           </div>
-          <div style={{ flex:1 }}>
-            <div style={{ fontWeight:800, fontSize:13 }}>{ev.title}</div>
-            <div style={{ fontSize:11, color:C.muted, marginTop:2 }}>📍 {ev.loc}</div>
+          <div style={{flex:1}}>
+            <div style={{fontWeight:800,fontSize:13}}>{ev.title}</div>
+            <div style={{fontSize:11,color:C.muted,marginTop:2}}>📍 {ev.loc}</div>
           </div>
-          <button onClick={() => setJoined(p=>({...p,[ev.title]:!p[ev.title]}))}
-            style={{ padding:"7px 14px", background: joined[ev.title] ? `${C.lime}22` : C.glass,
-              border:`1px solid ${joined[ev.title]?C.lime:C.glassBorder}`,
-              borderRadius:20, color: joined[ev.title]?C.lime:C.white,
-              fontSize:11, fontWeight:800, cursor:"pointer", whiteSpace:"nowrap" }}>
+          <button onClick={()=>setJoined(p=>({...p,[ev.title]:!p[ev.title]}))}
+            style={{padding:"7px 14px",background:joined[ev.title]?`${C.lime}22`:C.glass,
+              border:`1px solid ${joined[ev.title]?C.lime:C.glassBorder}`,borderRadius:20,
+              color:joined[ev.title]?C.lime:C.white,fontSize:11,fontWeight:800,cursor:"pointer",whiteSpace:"nowrap"}}>
             {joined[ev.title]?"✓ Katılıyorum":"Katıl"}
           </button>
         </GlassCard>
       ))}
-
-      {/* Challenge */}
-      <div style={{ background:`linear-gradient(135deg,${C.dark3},#1a3020)`,
-        border:`1px solid ${C.lime}33`, borderRadius:20, padding:"18px 20px", marginTop:8 }}>
-        <div style={{ fontSize:10, letterSpacing:3, color:C.lime, fontWeight:700, marginBottom:8 }}>VİRAL CHALLENGE</div>
-        <div style={{ fontWeight:900, fontSize:16, marginBottom:6 }}>🎯 #XSIDEStyleChallenge</div>
-        <div style={{ fontSize:12, color:C.muted, lineHeight:1.6, marginBottom:12 }}>
+      <div style={{background:`linear-gradient(135deg,${C.dark3},#1a3020)`,
+        border:`1px solid ${C.lime}33`,borderRadius:20,padding:"18px 20px",marginTop:8}}>
+        <div style={{fontSize:10,letterSpacing:3,color:C.lime,fontWeight:700,marginBottom:8}}>VİRAL CHALLENGE</div>
+        <div style={{fontWeight:900,fontSize:16,marginBottom:6}}>🎯 #XSIDEStyleChallenge</div>
+        <div style={{fontSize:12,color:C.muted,lineHeight:1.7,marginBottom:12}}>
           Xo ile kombini oluştur → TikTok/IG'de paylaş → Üniversite ekibinden oy al → En çok like alan kombinler mağazaya giriyor!
         </div>
-        <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
-          <PillBadge color={C.lime}>#XSIDEStyle</PillBadge>
-          <PillBadge color={C.pink}>#XSIDEChallenge</PillBadge>
-          <PillBadge color={C.purple}>#XSIDELife</PillBadge>
+        <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+          <Pill color={C.lime}>#XSIDEStyle</Pill>
+          <Pill color={C.pink}>#XSIDEChallenge</Pill>
+          <Pill color={C.purple}>#XSIDELife</Pill>
         </div>
       </div>
-
-      {/* Data Insight */}
-      <GlassCard style={{ marginTop:14 }}>
-        <div style={{ fontSize:11, letterSpacing:2, color:C.muted, fontWeight:700, marginBottom:12 }}>VERİ & TREND ANALİZİ</div>
+      <GlassCard style={{marginTop:14}}>
+        <div style={{fontSize:11,letterSpacing:2,color:C.muted,fontWeight:700,marginBottom:12}}>VERİ & TREND ANALİZİ</div>
         {[
-          { label:"En çok paylaşılan kombin", val:"Barrel Jean + Crop Gömlek", color:C.lime },
-          { label:"Bu haftanın trend rengi", val:"Kül Mavi + Kırık Beyaz", color:C.pink },
-          { label:"Z kuşağı stil skoru", val:"Street Casual #1", color:C.purple },
-        ].map(d => (
-          <div key={d.label} style={{ display:"flex", justifyContent:"space-between", alignItems:"center",
-            padding:"8px 0", borderBottom:`1px solid ${C.glassBorder}` }}>
-            <span style={{ fontSize:12, color:C.muted }}>{d.label}</span>
-            <span style={{ fontSize:12, fontWeight:800, color:d.color }}>{d.val}</span>
+          {label:"En çok paylaşılan kombin",val:"Barrel Jean + Crop Gömlek",color:C.lime},
+          {label:"Bu haftanın trend rengi",val:"Kül Mavi + Kırık Beyaz",color:C.pink},
+          {label:"Z kuşağı stil skoru",val:"Street Casual #1",color:C.purple},
+        ].map(d=>(
+          <div key={d.label} style={{display:"flex",justifyContent:"space-between",alignItems:"center",
+            padding:"8px 0",borderBottom:`1px solid ${C.glassBorder}`}}>
+            <span style={{fontSize:12,color:C.muted}}>{d.label}</span>
+            <span style={{fontSize:12,fontWeight:800,color:d.color}}>{d.val}</span>
           </div>
         ))}
       </GlassCard>
@@ -672,22 +705,8 @@ function CommunityTab() {
   );
 }
 
-/* ─── CSS ────────────────────────────────────────────────────────────── */
-const GLOBAL_CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: #07060F; }
-@keyframes float {
-  0%,100% { transform: translateY(0) rotate(-2deg); }
-  50%      { transform: translateY(-10px) rotate(2deg); }
-}
-@keyframes dot {
-  0%,80%,100% { transform: scale(.6); opacity: .4; }
-  40%         { transform: scale(1.1); opacity: 1; }
-}
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,45,107,.3); border-radius: 4px; }
-input[type=date]::-webkit-calendar-picker-indicator { filter: invert(1) opacity(.5); }
-button:active { transform: scale(.96); }
-`;
+/* ── RENDER ───────────────────────────────────────────────────────────── */
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>

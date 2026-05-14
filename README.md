@@ -10,7 +10,7 @@
 ![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react)
 ![GitHub Pages](https://img.shields.io/badge/GitHub-Pages-222?style=for-the-badge&logo=github)
 
-**[🚀 Canlı Demo →](https://kullaniciadi.github.io/xside-platform)**
+**[🚀 Canlı Demo →](https://zehrakolsuz.github.io/xside-platform)**
 
 </div>
 
@@ -196,6 +196,6 @@ Xo maskot tasarımı © Zehra Nur Kolsuz
 
 **HAYAL ET · TASARLA · GELECEĞİN MODA DÜNYASINA MEYDAN OKU**
 
-🙈 *Made with love by XO MOVERS*
+🙈 *Made with love by The XsiderS*
 
 </div>

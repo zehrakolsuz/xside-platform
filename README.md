@@ -69,7 +69,7 @@ open index.html
 ```
 1. Bu repoyu fork'la veya kendi repon olarak yükle
 2. Settings → Pages → Branch: main / (root) → Save
-3. https://kullaniciadi.github.io/xside-platform
+3. https://zehrakolsuz.github.io/xside-platform
 ```
 
 ### Seçenek 3: Local Server

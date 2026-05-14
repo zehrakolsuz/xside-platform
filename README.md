@@ -143,7 +143,7 @@ index.html (tek dosya, ~1.1 MB)
 
 ---
 
-## 👥 Takım — XO MOVERS
+## 👥 Takım — The XsiderS
 
 | İsim | Rol |
 |---|---|

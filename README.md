@@ -1,7 +1,7 @@
 # 🙈 XSIDE Style Universe — AI Kombin Asistanı
 
 > **Waikiki Challengers 2026 — Round 2**  
-> Takım: **XO MOVERS**
+> Takım: **The XsiderS**
 
 <div align="center">
 
